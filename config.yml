@@ -1,0 +1,195 @@
+---
+configure_dotfiles: true
+configure_terminal: true
+configure_osx: true
+
+# Set to 'true' to configure the Dock via dockutil.
+configure_dock: true
+
+dockitems_remove:
+  - Launchpad
+  - TV
+  - Podcasts
+  - 'App Store'
+  - Safari
+  - 'Apple Music'
+  - Music
+  - Reminders
+  - Mail
+  - Contacts
+  - Calendar
+  - Messages
+  - FaceTime
+  - Maps
+  - Photos
+  - News
+  - Stocks
+  - Home
+  - Books
+  - Freeform
+  - Notes
+  - Keynote
+  - Numbers
+  - Pages
+
+dockitems_persist:
+  # --- APLIKASI (Kiri Dock) ---
+  - name: "Google Chrome"
+    path: "/Applications/Google Chrome.app/"
+  
+  - name: "Visual Studio Code"
+    path: "/Applications/Visual Studio Code.app/"
+
+  - name: "iTerm"
+    path: "/Applications/iTerm.app/"
+
+  - name: "Cursor"
+    path: "/Applications/Cursor.app/"
+
+  - name: "Unity Hub"
+    path: "/Applications/Unity Hub.app/"
+
+  - name: "Docker"
+    path: "/Applications/Docker.app/"
+    
+  - name: "System Settings"
+    path: "/System/Applications/System Settings.app/"
+
+  # --- FOLDER SHORTCUTS (Kanan Dock / Dekat Sampah) ---
+  - name: "Applications"
+    path: "/Applications/"
+    
+  - name: "Documents"
+    path: "~/Documents/"
+    
+  - name: "Downloads"
+    path: "~/Downloads/"
+
+# Sudo tanpa password
+configure_sudoers: true
+sudoers_custom_config: |
+  # Allow users in admin group to use sudo with no password.
+  %admin ALL=(ALL) NOPASSWD: ALL
+
+dotfiles_repo: https://github.com/geerlingguy/dotfiles.git
+dotfiles_repo_accept_hostkey: true
+dotfiles_repo_local_destination: ~/Development/GitHub/dotfiles
+dotfiles_repo_version: master
+dotfiles_files:
+  - .zshrc
+  - .gitignore
+  - .inputrc
+  - .osx
+  - .vimrc
+
+# --- CLI TOOLS ---
+homebrew_installed_packages:
+  # App Store CLI
+  - mas
+  
+  # Game Dev Dependencies
+  - cocoapods
+  - gradle
+  - cmake
+  
+  # Essential Dev Tools
+  - git
+  - gh
+  - node
+  - nvm
+  - go
+  - php
+  - mysql
+  - sqlite
+  - httpie
+  
+  # Modern Utilities
+  - bat
+  - eza
+  - fzf
+  - jq
+  - tldr
+  - tree
+  - htop
+  - zoxide
+  - starship
+  
+  # System Libs
+  - autoconf
+  - bash-completion
+  - gettext
+  - gifsicle
+  - gpg
+  - iperf
+  - libevent
+  - nmap
+  - pngpaste
+  - ssh-copy-id
+  - readline
+  - openssl
+  - pv
+  - wget
+  - wrk
+  - zsh-history-substring-search
+
+homebrew_taps: []
+
+homebrew_cask_appdir: /Applications
+
+# --- GUI APPS ---
+homebrew_cask_apps:
+  # Game Dev Tools
+  - unity-hub
+  - android-studio
+  - android-platform-tools
+
+  # Browsers
+  - google-chrome
+  - firefox
+  
+  # Editors / IDE
+  - visual-studio-code
+  - cursor
+  - windsurf
+  - sequel-ace
+  
+  # Terminal
+  - iterm2
+  
+  # Productivity
+  - rectangle
+  - stats
+  - raycast
+  - appcleaner
+  - maccy
+  - the-unarchiver
+  
+  # Dev Tools
+  - docker
+  - chromedriver
+  - obs
+  - lulu
+  
+  # Runtimes
+  - dotnet
+  - openjdk
+
+# --- MAC APP STORE (MAS) ---
+mas_installed_apps: []
+
+mas_email: ""
+mas_password: ""
+
+osx_script: "~/.osx --no-restart"
+
+composer_packages: []
+gem_packages: []
+npm_packages: []
+pip_packages: []
+
+configure_sublime: false
+sublime_base_path: "~/Library/Application Support/Sublime Text"
+sublime_config_path: "Packages/User"
+sublime_package_control: []
+
+post_provision_tasks: []
