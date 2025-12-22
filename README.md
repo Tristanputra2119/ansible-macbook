@@ -1,7 +1,5 @@
 # 🍎 Mac Development Ansible Playbook
 
-[![CI][badge-gh-actions]][link-gh-actions]
-
 Playbook ini menginstall dan mengkonfigurasi sebagian besar software yang saya gunakan di Mac untuk development. Beberapa hal di macOS agak sulit untuk diotomasi, jadi masih ada beberapa langkah instalasi manual, tapi setidaknya semuanya sudah terdokumentasi di sini.
 
 ## 📦 Instalasi
@@ -137,11 +135,4 @@ Project ini di-test secara kontinyu menggunakan GitHub Actions. Kamu juga bisa m
 
 ## 👨‍💻 Author
 
-**Ngurah** - Forked dan dimodifikasi untuk kebutuhan personal development environment.
-
-Proyek asli dibuat oleh [Jeff Geerling](https://www.jeffgeerling.com/) (terinspirasi dari [MWGriffin/ansible-playbooks](https://github.com/MWGriffin/ansible-playbooks)).
-
----
-
-[badge-gh-actions]: https://github.com/geerlingguy/mac-dev-playbook/actions/workflows/ci.yml/badge.svg
-[link-gh-actions]: https://github.com/geerlingguy/mac-dev-playbook/actions/workflows/ci.yml
+**Ngurah** - Personal Mac development environment automation.
