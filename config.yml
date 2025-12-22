@@ -1,10 +1,15 @@
 ---
+
+
 configure_dotfiles: true
 configure_terminal: true
 configure_osx: true
 
-# Set to 'true' to configure the Dock via dockutil.
+# ============================================================
+# ⚓️ DOCK CONFIGURATION # Artinya didisable
+# ============================================================
 configure_dock: true
+dock_tilesize: 55
 
 dockitems_remove:
   - Launchpad
@@ -15,9 +20,9 @@ dockitems_remove:
   - 'Apple Music'
   - Music
   - Reminders
-  - Mail
+  # - Mail
   - Contacts
-  - Calendar
+  # - Calendar
   - Messages
   - FaceTime
   - Maps
@@ -27,35 +32,49 @@ dockitems_remove:
   - Home
   - Books
   - Freeform
-  - Notes
+  # - Notes
   - Keynote
   - Numbers
   - Pages
 
 dockitems_persist:
-  # --- APLIKASI (Kiri Dock) ---
+  # --- PRODUCTIVITY ---
+  - name: "Mail"
+    path: "/System/Applications/Mail.app/"
+
+  - name: "Calendar"
+    path: "/System/Applications/Calendar.app/"
+
+  - name: "Notes"
+    path: "/System/Applications/Notes.app/"
+
+  # --- BROWSERS & SYSTEM ---
   - name: "Google Chrome"
     path: "/Applications/Google Chrome.app/"
   
+  - name: "System Settings"
+    path: "/System/Applications/System Settings.app/"
+
+  # --- DEV TOOLS ---
   - name: "Visual Studio Code"
     path: "/Applications/Visual Studio Code.app/"
-
-  - name: "iTerm"
-    path: "/Applications/iTerm.app/"
 
   - name: "Cursor"
     path: "/Applications/Cursor.app/"
 
-  - name: "Unity Hub"
-    path: "/Applications/Unity Hub.app/"
+  - name: "Windsurf"
+    path: "/Applications/Windsurf.app/"
 
-  - name: "Docker"
-    path: "/Applications/Docker.app/"
-    
-  - name: "System Settings"
-    path: "/System/Applications/System Settings.app/"
+  - name: "iTerm"
+    path: "/Applications/iTerm.app/"
 
-  # --- FOLDER SHORTCUTS (Kanan Dock / Dekat Sampah) ---
+  - name: "Sequel Ace"
+    path: "/Applications/Sequel Ace.app/"
+
+  - name: "OrbStack"
+    path: "/Applications/OrbStack.app/"
+
+  # --- FOLDERS ---
   - name: "Applications"
     path: "/Applications/"
     
@@ -65,32 +84,17 @@ dockitems_persist:
   - name: "Downloads"
     path: "~/Downloads/"
 
-# Sudo tanpa password
-configure_sudoers: true
-sudoers_custom_config: |
-  # Allow users in admin group to use sudo with no password.
-  %admin ALL=(ALL) NOPASSWD: ALL
+# ============================================================
+# 🍺 HOMEBREW PACKAGES & APPS
+# ============================================================
 
-dotfiles_repo: https://github.com/geerlingguy/dotfiles.git
-dotfiles_repo_accept_hostkey: true
-dotfiles_repo_local_destination: ~/Development/GitHub/dotfiles
-dotfiles_repo_version: master
-dotfiles_files:
-  - .zshrc
-  - .gitignore
-  - .inputrc
-  - .osx
-  - .vimrc
-
-# --- CLI TOOLS ---
+# --- CLI TOOLS (Formula) ---
 homebrew_installed_packages:
-  # App Store CLI
-  - mas
-  
+
   # Game Dev Dependencies
-  - cocoapods
-  - gradle
-  - cmake
+  - cocoapods       
+  - gradle          
+  - cmake           
   
   # Essential Dev Tools
   - git
@@ -101,7 +105,8 @@ homebrew_installed_packages:
   - php
   - mysql
   - sqlite
-  - httpie
+  - httpd
+  - composer
   
   # Modern Utilities
   - bat
@@ -133,10 +138,9 @@ homebrew_installed_packages:
   - zsh-history-substring-search
 
 homebrew_taps: []
-
 homebrew_cask_appdir: /Applications
 
-# --- GUI APPS ---
+# --- GUI APPS (Cask) ---
 homebrew_cask_apps:
   # Game Dev Tools
   - unity-hub
@@ -163,24 +167,36 @@ homebrew_cask_apps:
   - appcleaner
   - maccy
   - the-unarchiver
-  
+  - discord
+  - slack
+  - steam
+  - affinity
+
+
   # Dev Tools
-  - docker
+  - orbstack          
   - chromedriver
   - obs
   - lulu
-  
-  # Runtimes
-  - dotnet
-  - openjdk
 
-# --- MAC APP STORE (MAS) ---
-mas_installed_apps: []
 
-mas_email: ""
-mas_password: ""
+# --- SCRIPTS & SUDOERS ---
+osx_script: "sh -c 'defaults write com.apple.dock tilesize -int 55; defaults write com.apple.universalaccess reduceTransparency -bool true; killall Dock'"
 
-osx_script: "~/.osx --no-restart"
+configure_sudoers: true
+sudoers_custom_config: |
+  %admin ALL=(ALL) NOPASSWD: ALL
+
+dotfiles_repo: https://github.com/geerlingguy/dotfiles.git
+dotfiles_repo_accept_hostkey: true
+dotfiles_repo_local_destination: ~/Development/GitHub/dotfiles
+dotfiles_repo_version: master
+dotfiles_files:
+  - .zshrc
+  - .gitignore
+  - .inputrc
+  - .osx
+  - .vimrc
 
 composer_packages: []
 gem_packages: []

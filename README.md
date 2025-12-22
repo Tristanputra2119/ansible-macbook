@@ -1,79 +1,92 @@
-<img src="https://raw.githubusercontent.com/geerlingguy/mac-dev-playbook/master/files/Mac-Dev-Playbook-Logo.png" width="250" height="156" alt="Mac Dev Playbook Logo" />
-
-# Mac Development Ansible Playbook
+# 🍎 Mac Development Ansible Playbook
 
 [![CI][badge-gh-actions]][link-gh-actions]
 
-This playbook installs and configures most of the software I use on my Mac for web and software development. Some things in macOS are slightly difficult to automate, so I still have a few manual installation steps, but at least it's all documented here.
+Playbook ini menginstall dan mengkonfigurasi sebagian besar software yang saya gunakan di Mac untuk development. Beberapa hal di macOS agak sulit untuk diotomasi, jadi masih ada beberapa langkah instalasi manual, tapi setidaknya semuanya sudah terdokumentasi di sini.
 
-## Installation
+## 📦 Instalasi
 
-  1. Ensure Apple's command line tools are installed (`xcode-select --install` to launch the installer).
-  2. [Install Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html):
+1. Pastikan Apple's command line tools sudah terinstall:
+   ```bash
+   xcode-select --install
+   ```
 
-     1. Run the following command to add Python 3 to your $PATH: `export PATH="$HOME/Library/Python/3.9/bin:/opt/homebrew/bin:$PATH"`
-     2. Upgrade Pip: `sudo pip3 install --upgrade pip`
-     3. Install Ansible: `pip3 install ansible`
+2. Install Ansible:
+   ```bash
+   # Tambahkan Python 3 ke PATH
+   export PATH="$HOME/Library/Python/3.9/bin:/opt/homebrew/bin:$PATH"
+   
+   # Upgrade Pip
+   sudo pip3 install --upgrade pip
+   
+   # Install Ansible
+   pip3 install ansible
+   ```
 
-  3. Clone or download this repository to your local drive.
-  4. Run `ansible-galaxy install -r requirements.yml` inside this directory to install required Ansible roles.
-  5. Run `ansible-playbook main.yml --ask-become-pass` inside this directory. Enter your macOS account password when prompted for the 'BECOME' password.
+3. Clone repository ini ke local drive.
 
-> Note: If some Homebrew commands fail, you might need to agree to Xcode's license or fix some other Brew issue. Run `brew doctor` to see if this is the case.
+4. Install role Ansible yang dibutuhkan:
+   ```bash
+   ansible-galaxy install -r requirements.yml
+   ```
 
-### Use with a remote Mac
+5. Jalankan playbook:
+   ```bash
+   ansible-playbook main.yml --ask-become-pass
+   ```
+   Masukkan password macOS kamu ketika diminta password 'BECOME'.
 
-You can use this playbook to manage other Macs as well; the playbook doesn't even need to be run from a Mac at all! If you want to manage a remote Mac, either another Mac on your network, or a hosted Mac like the ones from [MacStadium](https://www.macstadium.com), you just need to make sure you can connect to it with SSH:
+> **Catatan**: Jika ada command Homebrew yang gagal, mungkin kamu perlu menyetujui lisensi Xcode atau memperbaiki issue Brew lainnya. Jalankan `brew doctor` untuk mengeceknya.
 
-  1. (On the Mac you want to connect to:) Go to System Settings > Sharing.
-  2. Enable 'Remote Login'.
+## 🌐 Penggunaan dengan Mac Remote
 
-> You can also enable remote login on the command line:
->
->     sudo systemsetup -setremotelogin on
+Kamu bisa menggunakan playbook ini untuk mengelola Mac lain juga. Jika ingin mengelola Mac remote (Mac lain di jaringanmu atau hosted Mac seperti dari [MacStadium](https://www.macstadium.com)):
 
-Then edit the `inventory` file in this repository and change the line that starts with `127.0.0.1` to:
+1. Di Mac yang ingin dikoneksikan, buka **System Settings > Sharing**
+2. Aktifkan **'Remote Login'**
+
+> Kamu juga bisa mengaktifkan remote login via command line:
+> ```bash
+> sudo systemsetup -setremotelogin on
+> ```
+
+Kemudian edit file `inventory` dan ubah baris yang dimulai dengan `127.0.0.1` menjadi:
 
 ```
-[ip address or hostname of mac]  ansible_user=[mac ssh username]
+[ip address atau hostname mac]  ansible_user=[username ssh mac]
 ```
 
-If you need to supply an SSH password (if you don't use SSH keys), make sure to pass the `--ask-pass` parameter to the `ansible-playbook` command.
+Jika perlu menyediakan password SSH (jika tidak menggunakan SSH keys), pastikan untuk menambahkan parameter `--ask-pass` ke command `ansible-playbook`.
 
-### Running a specific set of tagged tasks
+## 🏷️ Menjalankan Task dengan Tag Tertentu
 
-You can filter which part of the provisioning process to run by specifying a set of tags using `ansible-playbook`'s `--tags` flag. The tags available are `dotfiles`, `homebrew`, `mas`, `extra-packages` and `osx`.
+Kamu bisa memfilter bagian mana dari proses provisioning yang ingin dijalankan dengan menentukan tag menggunakan flag `--tags`. Tag yang tersedia: `dotfiles`, `homebrew`, `mas`, `extra-packages`, dan `osx`.
 
-    ansible-playbook main.yml -K --tags "dotfiles,homebrew"
+```bash
+ansible-playbook main.yml -K --tags "dotfiles,homebrew"
+```
 
-## Overriding Defaults
+## ⚙️ Override Konfigurasi Default
 
-Not everyone's development environment and preferred software configuration is the same.
+Tidak semua development environment dan preferensi konfigurasi software itu sama.
 
-You can override any of the defaults configured in `default.config.yml` by creating a `config.yml` file and setting the overrides in that file. For example, you can customize the installed packages and apps with something like:
+Kamu bisa meng-override default yang sudah dikonfigurasi di `default.config.yml` dengan membuat file `config.yml` dan mengatur override di file tersebut. Contoh:
 
 ```yaml
 homebrew_installed_packages:
   - git
   - go
 
-mas_installed_apps:
-  - { id: 443987910, name: "1Password" }
-  - { id: 498486288, name: "Quick Resizer" }
-  - { id: 557168941, name: "Tweetbot" }
-  - { id: 497799835, name: "Xcode" }
+homebrew_cask_apps:
+  - google-chrome
+  - visual-studio-code
+  - iterm2
 
 composer_packages:
-  - name: hirak/prestissimo
-  - name: drush/drush
-    version: '^8.1'
-
-gem_packages:
-  - name: bundler
-    state: latest
+  - name: laravel/installer
 
 npm_packages:
-  - name: webpack
+  - name: pnpm
 
 pip_packages:
   - name: mkdocs
@@ -83,84 +96,52 @@ dockitems_remove:
   - Launchpad
   - TV
 dockitems_persist:
-  - name: "Sublime Text"
-    path: "/Applications/Sublime Text.app/"
-    pos: 5
+  - name: "Visual Studio Code"
+    path: "/Applications/Visual Studio Code.app/"
 ```
 
-Any variable can be overridden in `config.yml`; see the supporting roles' documentation for a complete list of available variables.
+Semua variable bisa di-override di `config.yml`. Lihat dokumentasi role pendukung untuk daftar lengkap variable yang tersedia.
 
-## Included Applications / Configuration (Default)
+## 📱 Aplikasi & Konfigurasi yang Termasuk
 
-Applications (installed with Homebrew Cask):
+### Aplikasi GUI (via Homebrew Cask)
 
-  - [ChromeDriver](https://sites.google.com/chromium.org/driver/)
-  - [Docker](https://www.docker.com/)
-  - [Dropbox](https://www.dropbox.com/)
-  - [Firefox](https://www.mozilla.org/en-US/firefox/new/)
-  - [Google Chrome](https://www.google.com/chrome/)
-  - [Handbrake](https://handbrake.fr/)
-  - [Homebrew](http://brew.sh/)
-  - [LICEcap](http://www.cockos.com/licecap/)
-  - [nvALT](http://brettterpstra.com/projects/nvalt/)
-  - [Sequel Ace](https://sequel-ace.com) (MySQL client)
-  - [Slack](https://slack.com/)
-  - [Sublime Text](https://www.sublimetext.com/)
-  - [Transmit](https://panic.com/transmit/) (S/FTP client)
+| Kategori | Aplikasi |
+|----------|----------|
+| 🎮 Game Dev | Unity Hub, Android Studio |
+| 🌐 Browser | Google Chrome, Firefox |
+| 💻 Editor/IDE | VS Code, Cursor, Windsurf, Sequel Ace |
+| 🖥️ Terminal | iTerm2 |
+| 🛠️ Productivity | Rectangle, Stats, Raycast, AppCleaner, Maccy |
+| 🐳 Dev Tools | OrbStack, ChromeDriver |
 
-Packages (installed with Homebrew):
+### CLI Tools (via Homebrew)
 
-  - autoconf
-  - bash-completion
-  - doxygen
-  - gettext
-  - gifsicle
-  - git
-  - gh
-  - go
-  - gpg
-  - httpie
-  - iperf
-  - libevent
-  - sqlite
-  - nmap
-  - node
-  - nvm
-  - php
-  - ssh-copy-id
-  - readline
-  - openssl
-  - pv
-  - wget
-  - wrk
-  - zsh-history-substring-search
+| Kategori | Package |
+|----------|---------|
+| 🎮 Game Dev | cocoapods, gradle, cmake |
+| 💻 Essential | git, gh, node, nvm, go, php, mysql, composer |
+| ✨ Modern Utils | bat, eza, fzf, jq, tldr, tree, htop, zoxide, starship |
+| 🔧 System Libs | autoconf, wget, openssl, gpg, nmap |
 
-My [dotfiles](https://github.com/geerlingguy/dotfiles) are also installed into the current user's home directory, including the `.osx` dotfile for configuring many aspects of macOS for better performance and ease of use. You can disable dotfiles management by setting `configure_dotfiles: no` in your configuration.
+## 🧪 Testing Playbook
 
-Finally, there are a few other preferences and settings added on for various apps and services.
+Project ini di-test secara kontinyu menggunakan GitHub Actions. Kamu juga bisa menjalankan macOS di dalam VM untuk testing. Rekomendasi:
 
-## Full / From-scratch setup guide
+- [UTM](https://mac.getutm.app)
+- [Tart](https://github.com/cirruslabs/tart)
 
-Since I've used this playbook to set up something like 20 different Macs, I decided to write up a full 100% from-scratch install for my own reference (everyone's particular install will be slightly different).
+## 📚 Referensi
 
-You can see my full from-scratch setup document here: [full-mac-setup.md](full-mac-setup.md).
+- [Ansible for DevOps](https://www.ansiblefordevops.com/) - Buku untuk belajar Ansible
 
-## Testing the Playbook
+## 👨‍💻 Author
 
-Many people have asked me if I often wipe my entire workstation and start from scratch just to test changes to the playbook. Nope! This project is [continuously tested on GitHub Actions' macOS infrastructure](https://github.com/geerlingguy/mac-dev-playbook/actions?query=workflow%3ACI).
+**Ngurah** - Forked dan dimodifikasi untuk kebutuhan personal development environment.
 
-You can also run macOS itself inside a VM, for at least some of the required testing (App Store apps and some proprietary software might not install properly). I currently recommend:
+Proyek asli dibuat oleh [Jeff Geerling](https://www.jeffgeerling.com/) (terinspirasi dari [MWGriffin/ansible-playbooks](https://github.com/MWGriffin/ansible-playbooks)).
 
-  - [UTM](https://mac.getutm.app)
-  - [Tart](https://github.com/cirruslabs/tart)
-
-## Ansible for DevOps
-
-Check out [Ansible for DevOps](https://www.ansiblefordevops.com/), which teaches you how to automate almost anything with Ansible.
-
-## Author
-
-This project was created by [Jeff Geerling](https://www.jeffgeerling.com/) (originally inspired by [MWGriffin/ansible-playbooks](https://github.com/MWGriffin/ansible-playbooks)).
+---
 
 [badge-gh-actions]: https://github.com/geerlingguy/mac-dev-playbook/actions/workflows/ci.yml/badge.svg
 [link-gh-actions]: https://github.com/geerlingguy/mac-dev-playbook/actions/workflows/ci.yml
