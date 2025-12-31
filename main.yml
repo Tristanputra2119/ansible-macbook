@@ -4,6 +4,10 @@
   become: true
   become_method: sudo
 
+  vars:
+    # ⚠️ TEMPORARY - HAPUS SETELAH SELESAI INSTALL!
+    ansible_become_pass: "PASSWORD_KAMU"
+
   vars_files:
     - default.config.yml
 
