@@ -1,0 +1,48 @@
+---
+# Fix Homebrew permissions after role runs (Intel Mac)
+- name: Get current username
+  command: whoami
+  register: current_user
+  changed_when: false
+  become: false
+
+- name: Ensure Homebrew directories exist (Intel Mac)
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - /usr/local/Cellar
+    - /usr/local/Caskroom
+    - /usr/local/Frameworks
+    - /usr/local/Homebrew
+    - /usr/local/bin
+    - /usr/local/etc
+    - /usr/local/include
+    - /usr/local/lib
+    - /usr/local/opt
+    - /usr/local/sbin
+    - /usr/local/share
+    - /usr/local/share/zsh
+    - /usr/local/share/zsh/site-functions
+  ignore_errors: true
+
+- name: Fix Homebrew folder ownership (Intel Mac)
+  file:
+    path: "{{ item }}"
+    owner: "{{ current_user.stdout }}"
+    group: admin
+    recurse: yes
+  loop:
+    - /usr/local/Cellar
+    - /usr/local/Caskroom
+    - /usr/local/Frameworks
+    - /usr/local/Homebrew
+    - /usr/local/bin
+    - /usr/local/etc
+    - /usr/local/include
+    - /usr/local/lib
+    - /usr/local/opt
+    - /usr/local/sbin
+    - /usr/local/share
+  ignore_errors: true

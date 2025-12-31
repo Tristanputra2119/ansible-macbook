@@ -33,6 +33,10 @@
       tags: ['dock']
 
   tasks:
+    - name: Fix Homebrew permissions (Intel Mac)
+      import_tasks: tasks/homebrew-permissions.yml
+      tags: ['homebrew']
+
     - import_tasks: tasks/sudoers.yml
       when: configure_sudoers
       tags: ['sudoers']
